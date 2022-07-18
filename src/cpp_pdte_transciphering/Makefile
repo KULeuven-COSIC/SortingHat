@@ -13,7 +13,7 @@ test_pdte_transciphering: test_pdte_transciphering.cpp libfinal.a
 libfinal.a: 
 	$(MAKE) -C ./final
 
-test_filip: filip.o test_filip.cpp
+test_filip: filip.o test_filip.cpp libfinal.a
 	$(CCX) $(CCXFLAGS) -o test_filip test_filip.cpp filip.o utils.o ./final/libfinal.a $(DEPS)
 
 filip.o: filip.h filip.cpp utils.o
@@ -25,7 +25,7 @@ utils.o: utils.h utils.cpp
 node.o: node.h node.cpp
 	$(CCX) $(CCXFLAGS) -c node.cpp -o node.o
 
-test_node: node.o test_node.cpp
+test_node: node.o test_node.cpp libfinal.a
 	$(CCX) $(CCXFLAGS) node.o test_node.cpp -o test_node ./final/libfinal.a $(DEPS)
 
 test_homomorphic_filip: filip.o utils.o homomorphic_filip.o test_homomorphic_filip.cpp libfinal.a
