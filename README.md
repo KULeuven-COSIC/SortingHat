@@ -29,7 +29,7 @@ Concrete and FINAL, which are:
 For convinience, we prepared Bash scripts to download and install these three dependencies. 
 So, if you want to use them, you can simply run
 
-`cd src/ && ./install_third_party_libs.sh`
+`./install_third_party_libs.sh`
 
 When the dependencies are met, the CLI can be built using
 `RUSTFLAGS="-C target-cpu=native" cargo build --release`.
