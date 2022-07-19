@@ -59,7 +59,7 @@ to run private decision tree evaluation on all datasets.
 A script exists under `script/train.py` which perform the training
 using [Concrete ML](https://github.com/zama-ai/concrete-ml) version 0.2.0.
 This is only necessary if new models need to be trained.
-Running the script is not necessary to use the CLI (described below).
+Running the script is not necessary to use the CLI (described above).
 
 ## Running our PDTE with transciphering
 
