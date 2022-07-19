@@ -1,4 +1,4 @@
-# Private decision tree evaluation using TFHE 
+# Private decision tree evaluation via Homomorphic Encryption and Transciphering 
 
 This is an implementation of the private decision tree evaluation (PDTE) algorithm
 from the paper [SortingHat: Efficient Private Decision Tree Evaluation via Homomorphic Encryption and Transciphering](https://eprint.iacr.org/2022/757), 
