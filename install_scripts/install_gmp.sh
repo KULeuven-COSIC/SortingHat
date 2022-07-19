@@ -1,3 +1,8 @@
+#!/bin/bash
+
+set -e
+set -u
+
 mkdir gmp_install
 
 cd gmp_install

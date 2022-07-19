@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -e
+set -u
+
 mkdir fftw_install
 
 cd fftw_install

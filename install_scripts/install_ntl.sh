@@ -1,5 +1,8 @@
 #!/bin/bash
 
+set -e
+set -u
+
 mkdir ntl_install
 
 cd ntl_install
