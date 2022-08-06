@@ -165,9 +165,10 @@ impl RLWECiphertext {
         }
     }
 
-    /// Compare this ciphertext c, which encrypts a polynomial X^n against a value d
+    /// Compare this ciphertext c, which encrypts m on the exponent against a value d
     /// the resulting ciphertext encrypts a polynomial m(X) such that
     /// m0 = 1 if m <= d, otherwise m0 = 0, where m0 is the constant term of m(X).
+    /// Note that encrypting on the exponent means m -> X^m.
     pub fn less_eq_than(&mut self, d: usize, buffers: &mut FourierBuffers<Scalar>) {
         let n = self.polynomial_size().0;
         assert!(d < n);
@@ -176,6 +177,26 @@ impl RLWECiphertext {
             t[0] = Scalar::one();
             for i in n-d..n {
                 t[i] = Scalar::MAX; // -1
+            }
+            Polynomial::from_container(t)
+        };
+
+        let mut poly_buffer = Polynomial::allocate(Scalar::zero(), self.polynomial_size());
+        self.update_body_with_mul_with_buf(&t_poly, &mut poly_buffer, buffers);
+        self.update_mask_with_mul_with_buf(&t_poly, &mut poly_buffer, buffers);
+    }
+
+    /// Checks whether this ciphertext c, which encrypts a value m on the exponent
+    /// equals to d.
+    pub fn eq_to(&mut self, d: usize, buffers: &mut FourierBuffers<Scalar>) {
+        let n = self.polynomial_size().0;
+        assert!(d < n);
+        let t_poly = {
+            let mut t = vec![Scalar::zero(); n];
+            if d == 0 {
+                t[0] = Scalar::one();
+            } else {
+                t[n-d] = Scalar::MAX;
             }
             Polynomial::from_container(t)
         };
@@ -1274,6 +1295,32 @@ mod test {
             let mut out = PlaintextList::allocate(Scalar::zero(), ctx.plaintext_count());
             sk.binary_decrypt_rlwe(&mut out, &ct);
             assert_eq!(*out.as_polynomial().get_monomial(MonomialDegree(0)).get_coefficient(), Scalar::zero());
+        }
+    }
+
+    #[test]
+    fn test_eq_to() {
+        let mut ctx = Context::default();
+        let sk = ctx.gen_rlwe_sk();
+        let mut buffers = FourierBuffers::new(ctx.poly_size, GlweSize(2));
+
+        let m = ctx.poly_size.0/2;
+        let mut ptxt = PlaintextList::allocate(Scalar::zero(), ctx.plaintext_count());
+        *ptxt.as_mut_polynomial().get_mut_monomial(MonomialDegree(m)).get_mut_coefficient() = Scalar::one();
+
+        for i in 0..ctx.poly_size.0 {
+            let mut ct = RLWECiphertext::allocate(ctx.poly_size);
+            sk.binary_encrypt_rlwe(&mut ct, &ptxt, &mut ctx);
+
+            ct.eq_to(i, &mut buffers);
+            let mut out = PlaintextList::allocate(Scalar::zero(), ctx.plaintext_count());
+            sk.binary_decrypt_rlwe(&mut out, &ct);
+            let res = *out.as_polynomial().get_monomial(MonomialDegree(0)).get_coefficient();
+            if i == m {
+                assert_eq!(res, 1);
+            } else {
+                assert_eq!(res, 0);
+            }
         }
     }
 
