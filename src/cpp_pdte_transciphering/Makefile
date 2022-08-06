@@ -5,7 +5,7 @@ DEPS = -lntl -lgmp -lfftw3 -lm
 all: clean test_filip test_node test_homomorphic_filip test_pdte_transciphering
  
 clean:
-	$(RM) test test_node test_filip test_homomorphic_filip test_pdte_transciphering *.o
+	$(RM) final/test test test_node test_filip test_homomorphic_filip test_pdte_transciphering *.o
 
 test_pdte_transciphering: test_pdte_transciphering.cpp libfinal.a
 	$(CCX) $(CCXFLAGS) -o test_pdte_transciphering test_pdte_transciphering.cpp node.o ./final/libfinal.a $(DEPS)

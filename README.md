@@ -6,7 +6,7 @@ by [Kelong Cong](https://www.esat.kuleuven.be/cosic/people/kelong-cong/),
 [Debajyoti Das](https://dedas111.github.io/),
 [Jeongeun Park](https://sites.google.com/view/jeongeunpark/), 
 and [Hilder Vitor Lima Pereira](https://hilder-vitor.github.io/), 
-which was published in ACM CSS 2022.
+which was published in ACM CCS 2022.
 
 **WARNING**:
 
@@ -65,4 +65,4 @@ Running the script is not necessary to use the CLI (described above).
 
 - `cd src/cpp_pdte_transciphering`
 - `make`
-- `./test_pdte_transciphering.cpp`
+- `./test_pdte_transciphering`
