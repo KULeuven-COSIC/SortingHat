@@ -130,8 +130,9 @@ pub(crate) fn mul_const<C>(poly: &mut Tensor<C>, c: Scalar)
     }
 }
 
-pub(crate) fn log2(x: usize) -> usize {
-    (x as f64).log2() as usize
+#[inline]
+pub(crate) const fn log2(input: usize) -> usize {
+    core::mem::size_of::<usize>() * 8 - (input.leading_zeros() as usize) - 1
 }
 
 /// Encode binary x as x*(q/2)
